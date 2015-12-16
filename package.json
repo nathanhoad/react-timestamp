@@ -1,0 +1,37 @@
+{
+  "name": "react-timestamp",
+  "version": "1.0.0",
+  "description": "A React component for displaying a datetime in the local timezone",
+  "scripts": {
+    "test": "mocha test/index.js --compilers js:babel-register"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nathanhoad/react-timestamp.git"
+  },
+  "keywords": [
+    "react",
+    "timestamp",
+    "datetime"
+  ],
+  "author": "Nathan Hoad",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nathanhoad/react-timestamp/issues"
+  },
+  "homepage": "https://github.com/nathanhoad/react-timestamp#readme",
+  "dependencies": {
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babel-register": "^6.3.13",
+    "jsdom": "^7.2.1",
+    "mocha": "^2.3.4",
+    "moment": "^2.10.6",
+    "react-addons-test-utils": "^0.14.3",
+    "should": "^8.0.1"
+  }
+}
