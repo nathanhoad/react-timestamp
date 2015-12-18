@@ -1,6 +1,6 @@
 {
   "name": "react-timestamp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A React component for displaying a datetime in the local timezone",
   "scripts": {
     "test": "mocha test/index.js --compilers js:babel-register"

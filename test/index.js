@@ -36,7 +36,19 @@ describe('Timestamp', () => {
             <Timestamp time={utc} format="short" />
         );
         
-        Should(ReactDOM.findDOMNode(timestamp).textContent).equal(local.format('D MMM YYYY, H:mma'));
+        Should(ReactDOM.findDOMNode(timestamp).textContent).equal(local.format('D MMM YYYY, h:mma'));
+    });
+    
+    
+    it('renders an integer timestamp in local time', () => {
+        let local = Moment();
+        let utc = Moment().utc();
+        
+        let timestamp = TestUtils.renderIntoDocument(
+            <Timestamp time={utc.unix()} format="short" />
+        );
+        
+        Should(ReactDOM.findDOMNode(timestamp).textContent).equal(local.format('D MMM YYYY, h:mma'));
     });
     
     

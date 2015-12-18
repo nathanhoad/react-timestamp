@@ -101,8 +101,12 @@ class Timestamp extends React.Component {
     }
     
     
-    _formatDate (date) {
-        if (date == '') return 'never';
+    _parseDate (date) {
+        if (date === '' || date === false || date === null) return false;
+        
+        if (typeof date === "number") {
+            date = new Date(date * 1000);
+        }
         
         if (date.toJSON) {
             date = date.toJSON();
@@ -112,21 +116,32 @@ class Timestamp extends React.Component {
         
         var t = date.split(/[:\-TZ\. ]/);
         for (var i in t) {
-            if (t[i] !== '' && isNaN(parseInt(t[i], 10))) return 'never';
+            if (t[i] !== '' && isNaN(parseInt(t[i], 10))) return false;
         }
-        var time = new Date("Sun Jan 01 00:00:00 UTC 2012");
+        var d = new Date("Sun Jan 01 00:00:00 UTC 2012");
         
-        time.setUTCFullYear(t[0]);
-        time.setUTCMonth(t[1] - 1);
-        time.setUTCDate(t[2]);
-        time.setUTCHours(t[3]);
-        time.setUTCMinutes(t[4]);
-        time.setUTCSeconds(t[5]);
+        d.setUTCFullYear(t[0]);
+        d.setUTCMonth(t[1] - 1);
+        d.setUTCDate(t[2]);
+        d.setUTCHours(t[3]);
+        d.setUTCMinutes(t[4]);
+        d.setUTCSeconds(t[5]);
+        
+        return d;
+    }
+    
+    
+    _formatDate (date) {
+        var d = this._parseDate(date);
+        
+        if (d === false) {
+            return 'never';
+        }
         
         if (this.props.format == 'ago') {
-            return this._timeAgoInWords(time);
+            return this._timeAgoInWords(d);
         } else {
-            return this._prettyTime(time);
+            return this._prettyTime(d);
         }
     }
     
