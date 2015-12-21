@@ -1,6 +1,6 @@
 {
   "name": "react-timestamp",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "A React component for displaying a datetime in the local timezone",
   "main": "lib/timestamp.js",
   "scripts": {
@@ -24,8 +24,7 @@
   },
   "homepage": "https://github.com/nathanhoad/react-timestamp#readme",
   "dependencies": {
-    "react": "^0.14.3",
-    "react-dom": "^0.14.3"
+    "react": "^0.14.3"
   },
   "devDependencies": {
     "babel-cli": "^6.3.17",
@@ -35,6 +34,7 @@
     "jsdom": "^7.2.1",
     "mocha": "^2.3.4",
     "moment": "^2.10.6",
+    "react-dom": "^0.14.3",
     "react-addons-test-utils": "^0.14.3",
     "should": "^8.0.1"
   }
