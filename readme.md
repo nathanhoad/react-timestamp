@@ -17,8 +17,16 @@ Use UTC times for the `time` prop.
 
 ```html
 <Timestamp time={thing.created_at} />
-<Timestamp time="2015-10-10 10:30:00" format='short' />
+<Timestamp time="2015-10-10 10:30:00" format='full' />
+<Timestamp time="1450663457" />
 ```
+
+Format options are:
+
+ * 'ago' (default) - 2 hours ago
+ * 'full' - 10 Oct 2015, 4:32pm
+ * 'date' - 10 Oct 2015
+ * 'time' - 4:32pm
 
 
 # Testing
