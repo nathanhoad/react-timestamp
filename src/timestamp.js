@@ -89,15 +89,31 @@ class Timestamp extends React.Component {
         } else {
             ampm = 'am';
         }
-                    
-        return this._formatString("{0} {1} {2}, {3}:{4}{5}",
-            date.getDate(),
-            MONTHS[date.getMonth()],
-            date.getFullYear(),
-            hours,
-            minutes,
-            ampm
-        );
+        
+        switch (this.props.format) {
+            case 'date':
+                return this._formatString("{0} {1} {2}",
+                    date.getDate(),
+                    MONTHS[date.getMonth()],
+                    date.getFullYear()
+                );
+            case 'time':
+                return this._formatString("{0}:{1}{2}",
+                    hours,
+                    minutes,
+                    ampm
+                );
+            case 'full':
+            default:
+                return this._formatString("{0} {1} {2}, {3}:{4}{5}",
+                    date.getDate(),
+                    MONTHS[date.getMonth()],
+                    date.getFullYear(),
+                    hours,
+                    minutes,
+                    ampm
+                );
+        }
     }
     
     

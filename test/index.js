@@ -28,15 +28,41 @@ describe('Timestamp', () => {
     });
     
     
-    it('renders a normal time in local time', () => {
-        let local = Moment();
-        let utc = Moment().utc();
+    describe('renders a normal time in local time', () => {
+        it('in full', () => {
+            let local = Moment();
+            let utc = Moment().utc();
+            
+            let timestamp = TestUtils.renderIntoDocument(
+                <Timestamp time={utc} format="full" />
+            );
+            
+            Should(ReactDOM.findDOMNode(timestamp).textContent).equal(local.format('D MMM YYYY, h:mma'));
+        });
         
-        let timestamp = TestUtils.renderIntoDocument(
-            <Timestamp time={utc} format="short" />
-        );
         
-        Should(ReactDOM.findDOMNode(timestamp).textContent).equal(local.format('D MMM YYYY, h:mma'));
+        it('just the date', () => {
+            let local = Moment();
+            let utc = Moment().utc();
+            
+            let timestamp = TestUtils.renderIntoDocument(
+                <Timestamp time={utc} format="date" />
+            );
+            
+            Should(ReactDOM.findDOMNode(timestamp).textContent).equal(local.format('D MMM YYYY'));
+        });
+        
+        
+        it('just the time', () => {
+            let local = Moment();
+            let utc = Moment().utc();
+            
+            let timestamp = TestUtils.renderIntoDocument(
+                <Timestamp time={utc} format="time" />
+            );
+            
+            Should(ReactDOM.findDOMNode(timestamp).textContent).equal(local.format('h:mma'));
+        });
     });
     
     
@@ -45,7 +71,7 @@ describe('Timestamp', () => {
         let utc = Moment().utc();
         
         let timestamp = TestUtils.renderIntoDocument(
-            <Timestamp time={utc.unix()} format="short" />
+            <Timestamp time={utc.unix()} format="full" />
         );
         
         Should(ReactDOM.findDOMNode(timestamp).textContent).equal(local.format('D MMM YYYY, h:mma'));
@@ -54,7 +80,7 @@ describe('Timestamp', () => {
     
     it('renders "never" for a bad date', () => {
         let timestamp = TestUtils.renderIntoDocument(
-            <Timestamp time="not a date or time" format="short" />
+            <Timestamp time="not a date or time" format="full" />
         );
         
         Should(ReactDOM.findDOMNode(timestamp).textContent).equal('never');
