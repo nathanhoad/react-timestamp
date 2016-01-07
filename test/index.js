@@ -5,7 +5,7 @@ import Moment from 'moment';
 import Should from 'should';
 import JSDOM from 'jsdom';
 
-import Timestamp from '../src/timestamp';
+import Timestamp from '../lib/timestamp';
 
 
 global.document = JSDOM.jsdom("<!doctype html><html><body></body></html>");

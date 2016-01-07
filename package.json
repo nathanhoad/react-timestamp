@@ -1,12 +1,12 @@
 {
   "name": "react-timestamp",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "A React component for displaying a datetime in the local timezone",
   "main": "lib/timestamp.js",
   "scripts": {
-    "test": "mocha test/index.js --compilers js:babel-register",
+    "test": "npm run compile && mocha test/index.js --compilers js:babel-register",
     "compile": "babel -d lib/ src/",
-    "prepublish": "npm test && npm run compile"
+    "prepublish": "npm test"
   },
   "repository": {
     "type": "git",

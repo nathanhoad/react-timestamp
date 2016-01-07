@@ -186,4 +186,4 @@ Timestamp.propTypes = {
 };
 
 
-export default Timestamp;
+module.exports = Timestamp;
