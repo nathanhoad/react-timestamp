@@ -14,7 +14,7 @@ global.window = document.defaultView;
 
 describe('Timestamp', () => {
     
-    it('renders a normal time ago', () => {
+    it('renders a normal time ago', (done) => {
         let timestamp = TestUtils.renderIntoDocument(
             <Timestamp time={Moment().subtract(3, 'days')} />
         );
@@ -25,11 +25,12 @@ describe('Timestamp', () => {
         );
         
         Should(ReactDOM.findDOMNode(timestamp).textContent).equal("3 months ago");
+        
+        done();
     });
     
-    
     describe('renders a normal time in local time', () => {
-        it('in full', () => {
+        it('in full', (done) => {
             let local = Moment();
             let utc = Moment().utc();
             
@@ -38,10 +39,18 @@ describe('Timestamp', () => {
             );
             
             Should(ReactDOM.findDOMNode(timestamp).textContent).equal(local.format('D MMM YYYY, h:mma'));
+            
+            timestamp = TestUtils.renderIntoDocument(
+                <Timestamp time={utc.format('YYYY-MM-DD h:mm:ss')} format="full" />
+            );
+            
+            Should(ReactDOM.findDOMNode(timestamp).textContent).equal(local.format('D MMM YYYY, h:mma'));
+            
+            done();
         });
         
         
-        it('just the date', () => {
+        it('just the date', (done) => {
             let local = Moment();
             let utc = Moment().utc();
             
@@ -50,10 +59,12 @@ describe('Timestamp', () => {
             );
             
             Should(ReactDOM.findDOMNode(timestamp).textContent).equal(local.format('D MMM YYYY'));
+            
+            done();
         });
         
         
-        it('just the time', () => {
+        it('just the time', (done) => {
             let local = Moment();
             let utc = Moment().utc();
             
@@ -62,11 +73,13 @@ describe('Timestamp', () => {
             );
             
             Should(ReactDOM.findDOMNode(timestamp).textContent).equal(local.format('h:mma'));
+            
+            done();
         });
     });
     
     
-    it('renders an integer timestamp in local time', () => {
+    it('renders an integer timestamp in local time', (done) => {
         let local = Moment();
         let utc = Moment().utc();
         
@@ -75,15 +88,19 @@ describe('Timestamp', () => {
         );
         
         Should(ReactDOM.findDOMNode(timestamp).textContent).equal(local.format('D MMM YYYY, h:mma'));
+        
+        done();
     });
     
     
-    it('renders "never" for a bad date', () => {
+    it('renders "never" for a bad date', (done) => {
         let timestamp = TestUtils.renderIntoDocument(
             <Timestamp time="not a date or time" format="full" />
         );
         
         Should(ReactDOM.findDOMNode(timestamp).textContent).equal('never');
+        
+        done();
     });
     
 });

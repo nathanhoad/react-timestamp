@@ -120,7 +120,8 @@ class Timestamp extends React.Component {
     _parseDate (date) {
         if (date === '' || date === false || date === null) return false;
         
-        if (typeof date === "number") {
+        if (typeof date === "number" || "" + parseInt(date, 10) == date) {
+            date = parseInt(date, 10);
             date = new Date(date * 1000);
         }
         
