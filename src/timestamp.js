@@ -34,7 +34,7 @@ class Timestamp extends React.Component {
 
     
     _timeAgoInWords (date) {
-        var seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000),
+        var seconds = Math.round((new Date().getTime() / 1000)) - Math.round((date.getTime() / 1000000)),
             ago;
         
         if (seconds < 60) { // 1 minute
