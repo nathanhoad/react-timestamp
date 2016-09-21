@@ -1,5 +1,7 @@
 # Timestamp
 
+![](https://codeship.com/projects/7a8c81a0-6225-0134-3d52-0627957cda96/status?branch=master)
+
 A React component for displaying a datetime in the local timezone
 
 
