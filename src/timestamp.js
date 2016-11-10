@@ -2,6 +2,7 @@ import React from 'react';
 
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 
 class Timestamp extends React.Component {
@@ -92,7 +93,7 @@ class Timestamp extends React.Component {
         
         switch (this.props.format) {
             case 'date':
-                return this._formatString("{0} {1} {2}",
+                return (this.props.includeDay ? DAYS[date.getDay()] + ', ' : '') + this._formatString("{0} {1} {2}",
                     date.getDate(),
                     MONTHS[date.getMonth()],
                     date.getFullYear()
@@ -105,7 +106,7 @@ class Timestamp extends React.Component {
                 );
             case 'full':
             default:
-                return this._formatString("{0} {1} {2}, {3}:{4}{5}",
+                return (this.props.includeDay ? DAYS[date.getDay()] + ', ' : '') + this._formatString("{0} {1} {2}, {3}:{4}{5}",
                     date.getDate(),
                     MONTHS[date.getMonth()],
                     date.getFullYear(),
@@ -176,14 +177,16 @@ class Timestamp extends React.Component {
 
 Timestamp.defaultProps = {
     time: new Date(),
-    format: 'ago'
+    format: 'ago',
+    includeDay: false
 };
 
 
 Timestamp.propTypes = {
     time: React.PropTypes.any.isRequired,
     format: React.PropTypes.string,
-    className: React.PropTypes.any
+    className: React.PropTypes.any,
+    includeDay: React.PropTypes.bool
 };
 
 

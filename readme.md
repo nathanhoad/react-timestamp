@@ -12,7 +12,7 @@ A React component for displaying a datetime in the local timezone
 Then:
 
 ```javascript
-import Timestamp from 'react-timestamp';
+const Timestamp = require('react-timestamp');
 ```
 
 Use UTC times for the `time` prop.
@@ -21,6 +21,7 @@ Use UTC times for the `time` prop.
 <Timestamp time={thing.created_at} />
 <Timestamp time="2015-10-10 10:30:00" format='full' />
 <Timestamp time="1450663457" />
+<Timestamp time="1450663457" format='full' includeDay />
 ```
 
 Format options are:

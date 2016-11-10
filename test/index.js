@@ -46,6 +46,16 @@ describe('Timestamp', () => {
             
             Should(ReactDOM.findDOMNode(timestamp).textContent).equal(local.format('D MMM YYYY, h:mma'));
             
+            // Check for includeDay
+            local = Moment();
+            utc = Moment().utc();
+            
+            timestamp = TestUtils.renderIntoDocument(
+                <Timestamp time={utc} format="full" includeDay />
+            );
+            
+            Should(ReactDOM.findDOMNode(timestamp).textContent).equal(local.format('dddd, D MMM YYYY, h:mma'));
+            
             done();
         });
         
@@ -73,6 +83,20 @@ describe('Timestamp', () => {
             );
             
             Should(ReactDOM.findDOMNode(timestamp).textContent).equal(local.format('h:mma'));
+            
+            done();
+        });
+        
+        
+        it('includes the day', (done) => {
+            let local = Moment();
+            let utc = Moment().utc();
+            
+            let timestamp = TestUtils.renderIntoDocument(
+                <Timestamp time={utc} format="date" includeDay />
+            );
+            
+            Should(ReactDOM.findDOMNode(timestamp).textContent).equal(local.format('dddd, D MMM YYYY'));
             
             done();
         });
