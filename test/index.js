@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
-import Moment from 'moment';
+import Moment from 'moment-timezone';
 import Should from 'should';
 import JSDOM from 'jsdom';
 
@@ -28,6 +28,7 @@ describe('Timestamp', () => {
         
         done();
     });
+    
     
     describe('renders a normal time in local time', () => {
         it('in full', (done) => {
@@ -134,6 +135,34 @@ describe('Timestamp', () => {
         );
         
         Should(ReactDOM.findDOMNode(timestamp).textContent).equal('never');
+        
+        done();
+    });
+    
+    
+    it('renders for a different zone', (done) => {
+        let utc = Moment().utc();
+        
+        let sydney = Moment().tz('Australia/Sydney');
+        let timestamp = TestUtils.renderIntoDocument(
+            <Timestamp time={utc} format="full" offset={1100} />
+        );
+        
+        Should(ReactDOM.findDOMNode(timestamp).textContent).equal(sydney.format('D MMM YYYY, h:mma'));
+        
+        let perth = Moment().tz('Australia/Perth');
+        timestamp = TestUtils.renderIntoDocument(
+            <Timestamp time={utc} format="full" offset="+800" />
+        );
+        
+        Should(ReactDOM.findDOMNode(timestamp).textContent).equal(perth.format('D MMM YYYY, h:mma'));
+        
+        let la = Moment().tz('America/Los_Angeles');
+        timestamp = TestUtils.renderIntoDocument(
+            <Timestamp time={utc} format="full" offset={-800} />
+        );
+        
+        Should(ReactDOM.findDOMNode(timestamp).textContent).equal(la.format('D MMM YYYY, h:mma'));
         
         done();
     });

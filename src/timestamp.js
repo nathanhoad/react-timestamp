@@ -136,6 +136,7 @@ class Timestamp extends React.Component {
         for (var i in t) {
             if (t[i] !== '' && isNaN(parseInt(t[i], 10))) return false;
         }
+        
         var d = new Date("Sun Jan 01 00:00:00 UTC 2012");
         
         d.setUTCFullYear(t[0]);
@@ -144,6 +145,17 @@ class Timestamp extends React.Component {
         d.setUTCHours(t[3]);
         d.setUTCMinutes(t[4]);
         d.setUTCSeconds(t[5]);
+        
+        if (this.props.offset !== 0) {
+            var given_offset = this.props.offset;
+            
+            if (typeof given_offset === "string") given_offset = parseInt(given_offset, 10);
+            
+            given_offset = (given_offset / 100 * 60); // Convert from 24 hour time to actual minutes
+            var actual_offset = given_offset + d.getTimezoneOffset(); // locale offset is something like -10 * 60 for Australia/Brisbane
+            
+            d.setUTCMinutes(d.getUTCMinutes() + actual_offset);
+        }
         
         return d;
     }
@@ -178,7 +190,8 @@ class Timestamp extends React.Component {
 Timestamp.defaultProps = {
     time: new Date(),
     format: 'ago',
-    includeDay: false
+    includeDay: false,
+    offset: 0
 };
 
 

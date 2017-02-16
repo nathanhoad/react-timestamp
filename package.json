@@ -33,7 +33,7 @@
     "babel-register": "^6.3.13",
     "jsdom": "^7.2.1",
     "mocha": "^2.3.4",
-    "moment": "^2.10.6",
+    "moment-timezone": "*",
     "react-dom": "*",
     "react-addons-test-utils": "*",
     "should": "^8.0.1"
