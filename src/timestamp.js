@@ -183,7 +183,7 @@ Timestamp.defaultProps = {
 
 
 Timestamp.propTypes = {
-    time: React.PropTypes.any.isRequired,
+    time: React.PropTypes.any,
     format: React.PropTypes.string,
     className: React.PropTypes.any,
     includeDay: React.PropTypes.bool

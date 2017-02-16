@@ -127,4 +127,15 @@ describe('Timestamp', () => {
         done();
     });
     
+    
+    it('renders "never" for a null date', (done) => {
+        let timestamp = TestUtils.renderIntoDocument(
+            <Timestamp time={null} format="full" />
+        );
+        
+        Should(ReactDOM.findDOMNode(timestamp).textContent).equal('never');
+        
+        done();
+    });
+    
 });

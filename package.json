@@ -34,8 +34,8 @@
     "jsdom": "^7.2.1",
     "mocha": "^2.3.4",
     "moment": "^2.10.6",
-    "react-dom": "^0.14.3",
-    "react-addons-test-utils": "^0.14.3",
+    "react-dom": "*",
+    "react-addons-test-utils": "*",
     "should": "^8.0.1"
   }
 }
