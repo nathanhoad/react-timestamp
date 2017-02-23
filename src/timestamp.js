@@ -1,68 +1,63 @@
-import React from 'react';
+const React = require('react');
 
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 
-class Timestamp extends React.Component {
-    
-    _formatString (string) {
-        var formatted = string,
-            i,
-            regexp;
-        
-        for (i in arguments) {
-            if (i > 0) {
-                regexp = new RegExp('\\{' + (i - 1) + '\\}', 'gi');
-                formatted = formatted.replace(regexp, arguments[i]);
-            }
-        }
-    
-        return formatted;
+function plural (string, count, many) {
+    if (count == 1) {
+        return string;
+    } else if (many) {
+        return many;
+    } else {
+        return string + "s";
     }
-    
-    
-    _plural (string, count, many) {
-        if (count == 1) {
-            return string;
-        } else if (many) {
-            return many;
-        } else {
-            return string + "s";
-        }
-    }
+}
 
-    
-    _timeAgoInWords (date) {
-        var seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000),
-            ago;
+
+class Timestamp extends React.Component {
+    _distanceOfTimeInWords (date) {
+        var seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
+        var is_ago = (seconds >= 0);
+        
+        seconds = Math.abs(seconds);
+        
+        var distance;
+        var when;
         
         if (seconds < 60) { // 1 minute
-            return "Just then";
+            return is_ago ? "Just then" : "Soon";
             
         } else if (seconds < 60 * 60) { // 1 hour
-            ago = Math.floor(seconds / 60);
-            return this._formatString("{0} {1} ago", ago, this._plural('minute', ago));
+            distance = Math.floor(seconds / 60);
+            when = `${distance} ${plural('minute', distance)}`;
             
         } else if (seconds < 60 * 60 * 24) { // 1 day
-            ago = Math.floor(seconds / (60 * 60));
-            return this._formatString("{0} {1} ago", ago, this._plural('hour', ago));
+            distance = Math.floor(seconds / (60 * 60));
+            when = `${distance} ${plural('hour', distance)}`;
             
         } else if (seconds < 60 * 60 * 24 * 7) { // 1 week
-            ago = Math.floor(seconds / (60 * 60 * 24));
-            return this._formatString("{0} {1} ago", ago, this._plural('day', ago));
+            distance = Math.floor(seconds / (60 * 60 * 24));
+            when = `${distance} ${plural('day', distance)}`;
             
         } else if (seconds < 60 * 60 * 24 * 30) { // 1 month
-            ago = Math.floor(seconds / (60 * 60 * 24 * 7));
-            return this._formatString("{0} {1} ago", ago, this._plural('week', ago));
+            distance = Math.floor(seconds / (60 * 60 * 24 * 7));
+            when = `${distance} ${plural('week', distance)}`;
             
         } else if (seconds < 60 * 60 * 24 * 30 * 12) { // # 1 year
-            ago = Math.floor(seconds / (60 * 60 * 24 * 30));
-            return this._formatString("{0} {1} ago", ago, this._plural('month', ago));
+            distance = Math.floor(seconds / (60 * 60 * 24 * 30));
+            when = `${distance} ${plural('month', distance)}`;
             
         } else {
             return this._prettyTime(date);
+        }
+        
+        
+        if (is_ago) {
+            return `${when} ago`;
+        } else {
+            return `in ${when}`;
         }
     }
     
@@ -91,29 +86,16 @@ class Timestamp extends React.Component {
             ampm = 'am';
         }
         
+        var day = (this.props.includeDay ? DAYS[date.getDay()] + ', ' : '');
+        
         switch (this.props.format) {
             case 'date':
-                return (this.props.includeDay ? DAYS[date.getDay()] + ', ' : '') + this._formatString("{0} {1} {2}",
-                    date.getDate(),
-                    MONTHS[date.getMonth()],
-                    date.getFullYear()
-                );
+                return `${day}${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}`
             case 'time':
-                return this._formatString("{0}:{1}{2}",
-                    hours,
-                    minutes,
-                    ampm
-                );
+                return `${hours}:${minutes}${ampm}`;
             case 'full':
             default:
-                return (this.props.includeDay ? DAYS[date.getDay()] + ', ' : '') + this._formatString("{0} {1} {2}, {3}:{4}{5}",
-                    date.getDate(),
-                    MONTHS[date.getMonth()],
-                    date.getFullYear(),
-                    hours,
-                    minutes,
-                    ampm
-                );
+                return `${day}${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}, ${hours}:${minutes}${ampm}`;
         }
     }
     
@@ -168,8 +150,8 @@ class Timestamp extends React.Component {
             return 'never';
         }
         
-        if (this.props.format == 'ago') {
-            return this._timeAgoInWords(d);
+        if (this.props.format == 'ago' || this.props.format == 'future' || this.props.format == "relative") {
+            return this._distanceOfTimeInWords(d);
         } else {
             return this._prettyTime(d);
         }

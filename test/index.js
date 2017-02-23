@@ -30,6 +30,22 @@ describe('Timestamp', () => {
     });
     
     
+    it('renders a normal time in the future', (done) => {
+        let timestamp = TestUtils.renderIntoDocument(
+            <Timestamp time={Moment().add(4, 'days')} />
+        );
+        Should(ReactDOM.findDOMNode(timestamp).textContent).equal("in 4 days");
+        
+        timestamp = TestUtils.renderIntoDocument(
+            <Timestamp time={Moment().add(4, 'months')} />
+        );
+        
+        Should(ReactDOM.findDOMNode(timestamp).textContent).equal("in 4 months");
+        
+        done();
+    });
+    
+    
     describe('renders a normal time in local time', () => {
         it('in full', (done) => {
             let local = Moment();
