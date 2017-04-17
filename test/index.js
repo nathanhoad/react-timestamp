@@ -26,6 +26,18 @@ describe('Timestamp', () => {
         
         Should(ReactDOM.findDOMNode(timestamp).textContent).equal("3 months ago");
         
+        timestamp = TestUtils.renderIntoDocument(
+            <Timestamp time={Moment().subtract(3, 'months')} since={Moment().subtract(1, 'month')} />
+        );
+        
+        Should(ReactDOM.findDOMNode(timestamp).textContent).equal("2 months");
+        
+        timestamp = TestUtils.renderIntoDocument(
+            <Timestamp time={Moment().subtract(3, 'months')} until={Moment().add(1, 'month')} />
+        );
+        
+        Should(ReactDOM.findDOMNode(timestamp).textContent).equal("4 months");
+        
         done();
     });
     
@@ -156,26 +168,24 @@ describe('Timestamp', () => {
     });
     
     
-    it('renders for a different zone', (done) => {
-        let utc = Moment().utc();
-        
+    it('renders without converting from UTC', (done) => {
         let sydney = Moment().tz('Australia/Sydney');
         let timestamp = TestUtils.renderIntoDocument(
-            <Timestamp time={utc} format="full" offset={1100} />
+            <Timestamp time={sydney.format()} utc={false} format="full" />
         );
         
         Should(ReactDOM.findDOMNode(timestamp).textContent).equal(sydney.format('D MMM YYYY, h:mma'));
         
         let perth = Moment().tz('Australia/Perth');
         timestamp = TestUtils.renderIntoDocument(
-            <Timestamp time={utc} format="full" offset="+800" />
+            <Timestamp time={perth.format()} utc={false} format="full" />
         );
         
         Should(ReactDOM.findDOMNode(timestamp).textContent).equal(perth.format('D MMM YYYY, h:mma'));
         
         let la = Moment().tz('America/Los_Angeles');
         timestamp = TestUtils.renderIntoDocument(
-            <Timestamp time={utc} format="full" offset={-800} />
+            <Timestamp time={la.format()} utc={false} format="full" />
         );
         
         Should(ReactDOM.findDOMNode(timestamp).textContent).equal(la.format('D MMM YYYY, h:mma'));

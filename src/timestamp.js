@@ -17,8 +17,17 @@ function plural (string, count, many) {
 
 
 class Timestamp extends React.Component {
-    _distanceOfTimeInWords (date) {
-        var seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
+    _distanceOfTimeInWords (date, compare_to) {
+        var is_comparing = false;
+        
+        if (compare_to) {
+            if (compare_to.toDate) compare_to = compare_to.toDate();
+            is_comparing = true;
+        } else {
+            compare_to = new Date();
+        }
+        
+        var seconds = Math.floor((compare_to.getTime() - date.getTime()) / 1000);
         var is_ago = (seconds >= 0);
         
         seconds = Math.abs(seconds);
@@ -27,34 +36,39 @@ class Timestamp extends React.Component {
         var when;
         
         if (seconds < 60) { // 1 minute
-            return is_ago ? "Just then" : "Soon";
+            if (is_comparing) {
+                return is_ago ? "Just then" : "Soon";
+            } else {
+                return 'A few seconds';
+            }
             
         } else if (seconds < 60 * 60) { // 1 hour
-            distance = Math.floor(seconds / 60);
+            distance = Math.round(seconds / 60);
             when = `${distance} ${plural('minute', distance)}`;
             
         } else if (seconds < 60 * 60 * 24) { // 1 day
-            distance = Math.floor(seconds / (60 * 60));
+            distance = Math.round(seconds / (60 * 60));
             when = `${distance} ${plural('hour', distance)}`;
             
         } else if (seconds < 60 * 60 * 24 * 7) { // 1 week
-            distance = Math.floor(seconds / (60 * 60 * 24));
+            distance = Math.round(seconds / (60 * 60 * 24));
             when = `${distance} ${plural('day', distance)}`;
             
-        } else if (seconds < 60 * 60 * 24 * 30) { // 1 month
-            distance = Math.floor(seconds / (60 * 60 * 24 * 7));
+        } else if (seconds < 60 * 60 * 24 * (365 / 12)) { // 1 month
+            distance = Math.round(seconds / (60 * 60 * 24 * 7));
             when = `${distance} ${plural('week', distance)}`;
             
         } else if (seconds < 60 * 60 * 24 * 30 * 12) { // # 1 year
-            distance = Math.floor(seconds / (60 * 60 * 24 * 30));
+            distance = Math.round(seconds / (60 * 60 * 24 * (365 / 12)));
             when = `${distance} ${plural('month', distance)}`;
             
         } else {
             return this._prettyTime(date);
         }
         
-        
-        if (is_ago) {
+        if (is_comparing) {
+            return when;
+        } else if (is_ago) {
             return `${when} ago`;
         } else {
             return `in ${when}`;
@@ -114,29 +128,30 @@ class Timestamp extends React.Component {
             date = date.toString();
         }
         
-        var t = date.split(/[:\-TZ\. ]/);
+        var t = date.split(/[:\-\+TZ\. ]/);
         for (var i in t) {
             if (t[i] !== '' && isNaN(parseInt(t[i], 10))) return false;
         }
         
-        var d = new Date("Sun Jan 01 00:00:00 UTC 2012");
+        var d;
         
-        d.setUTCFullYear(t[0]);
-        d.setUTCMonth(t[1] - 1);
-        d.setUTCDate(t[2]);
-        d.setUTCHours(t[3]);
-        d.setUTCMinutes(t[4]);
-        d.setUTCSeconds(t[5]);
-        
-        if (this.props.offset !== 0) {
-            var given_offset = this.props.offset;
+        if (this.props.utc) {
+            d = new Date("Sun Jan 01 00:00:00 UTC 2012");
+            d.setUTCFullYear(t[0]);
+            d.setUTCMonth(t[1] - 1);
+            d.setUTCDate(t[2]);
+            d.setUTCHours(t[3]);
+            d.setUTCMinutes(t[4]);
+            d.setUTCSeconds(t[5]);
             
-            if (typeof given_offset === "string") given_offset = parseInt(given_offset, 10);
-            
-            given_offset = (given_offset / 100 * 60); // Convert from 24 hour time to actual minutes
-            var actual_offset = given_offset + d.getTimezoneOffset(); // locale offset is something like -10 * 60 for Australia/Brisbane
-            
-            d.setUTCMinutes(d.getUTCMinutes() + actual_offset);
+        } else {
+            d = new Date("1/1/1970");
+            d.setFullYear(t[0]);
+            d.setMonth(t[1] - 1);
+            d.setDate(t[2]);
+            d.setHours(t[3]);
+            d.setMinutes(t[4]);
+            d.setSeconds(t[5]);
         }
         
         return d;
@@ -150,8 +165,8 @@ class Timestamp extends React.Component {
             return 'never';
         }
         
-        if (this.props.format == 'ago' || this.props.format == 'future' || this.props.format == "relative") {
-            return this._distanceOfTimeInWords(d);
+        if (this.props.format == 'ago' || this.props.format == 'future' || this.props.format == "relative" || this.props.since || this.props.until) {
+            return this._distanceOfTimeInWords(d, this.props.since || this.props.until || null);
         } else {
             return this._prettyTime(d);
         }
@@ -171,17 +186,11 @@ class Timestamp extends React.Component {
 
 Timestamp.defaultProps = {
     time: new Date(),
+    utc: true,
     format: 'ago',
-    includeDay: false,
-    offset: 0
-};
-
-
-Timestamp.propTypes = {
-    time: React.PropTypes.any,
-    format: React.PropTypes.string,
-    className: React.PropTypes.any,
-    includeDay: React.PropTypes.bool
+    since: null,
+    until: null,
+    includeDay: false
 };
 
 

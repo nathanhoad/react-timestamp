@@ -20,8 +20,11 @@ Use UTC times for the `time` prop.
 ```html
 <Timestamp time={thing.created_at} />
 <Timestamp time="2015-10-10 10:30:00" format='full' />
+<Timestamp time="2015-10-10 10:30:00" utc={false} format='full' /> <!-- Don't convert the timestamp to local time -->
 <Timestamp time="1450663457" />
 <Timestamp time="1450663457" format='full' includeDay />
+<Timestamp time="1450663457" since="145060000" />
+<Timestamp time="1450663457" until="145070000" />
 ```
 
 Format options are:
