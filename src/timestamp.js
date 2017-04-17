@@ -174,10 +174,10 @@ class Timestamp extends React.Component {
     
     
     render () {
-        return (
-            <span className={this.props.className}>
-                {this._formatDate(this.props.time)}
-            </span>
+        return React.createElement(
+            this.props.component,
+            { className: this.props.className, style: this.props.style },
+            this._formatDate(this.props.time)
         );
     }
     
@@ -190,7 +190,10 @@ Timestamp.defaultProps = {
     format: 'ago',
     since: null,
     until: null,
-    includeDay: false
+    includeDay: false,
+    component: 'span',
+    className: '',
+    style: {}
 };
 
 

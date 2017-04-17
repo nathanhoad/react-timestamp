@@ -35,6 +35,21 @@ Format options are:
  * 'time' - 4:32pm
 
 
+## Usage with React Native
+
+If you are using React Native then you'll have to pass in `Text`.
+
+```javascript
+import Timestamp from 'react-timestamp';
+import { Text } from 'react-native';
+```
+
+Then:
+
+```html
+<Timestamp time="1450663457" component={Text} />
+```
+
 # Testing
 
 `npm test`
