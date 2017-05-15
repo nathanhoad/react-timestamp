@@ -119,6 +119,9 @@ class Timestamp extends React.Component {
         
         if (typeof date === "number" || "" + parseInt(date, 10) == date) {
             date = parseInt(date, 10);
+            
+            if (isNaN(date)) return false;
+            
             date = new Date(date * 1000);
         }
         

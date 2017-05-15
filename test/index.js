@@ -153,6 +153,18 @@ describe('Timestamp', () => {
         
         Should(ReactDOM.findDOMNode(timestamp).textContent).equal('never');
         
+        timestamp = TestUtils.renderIntoDocument(
+            <Timestamp time={NaN} format="full" />
+        );
+        
+        Should(ReactDOM.findDOMNode(timestamp).textContent).equal('never');
+        
+        timestamp = TestUtils.renderIntoDocument(
+            <Timestamp time={null} format="full" />
+        );
+        
+        Should(ReactDOM.findDOMNode(timestamp).textContent).equal('never');
+        
         done();
     });
     
