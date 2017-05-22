@@ -1,6 +1,6 @@
 {
   "name": "react-timestamp",
-  "version": "4.1.1",
+  "version": "4.2.0",
   "description": "A React component for displaying a datetime in the local timezone",
   "main": "lib/timestamp.js",
   "scripts": {
