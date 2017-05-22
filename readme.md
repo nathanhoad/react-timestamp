@@ -19,6 +19,7 @@ Use UTC times for the `time` prop.
 
 ```html
 <Timestamp time={thing.created_at} />
+<Timestamp time={thing.created_at} precision={2} />
 <Timestamp time="2015-10-10 10:30:00" format='full' />
 <Timestamp time="2015-10-10 10:30:00" utc={false} format='full' /> <!-- Don't convert the timestamp to local time -->
 <Timestamp time="1450663457" />
@@ -33,6 +34,19 @@ Format options are:
  * 'full' - 10 Oct 2015, 4:32pm
  * 'date' - 10 Oct 2015
  * 'time' - 4:32pm
+
+Precision works like this:
+
+```html
+<Timestamp time={SOME DATE} precision={3} />
+<!-- 2 days, 4 hours, 1 minute ago -->
+
+<Timestamp time={SOME DATE} precision={2} />
+<!-- 2 days, 4 hours -->
+
+<Timestamp time={SOME DATE} precision={1} />
+<!-- 2 days -->
+```
 
 
 ## Usage with React Native

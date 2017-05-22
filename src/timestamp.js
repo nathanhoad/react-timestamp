@@ -32,38 +32,85 @@ class Timestamp extends React.Component {
         
         seconds = Math.abs(seconds);
         
-        var distance;
-        var when;
-        
         if (seconds < 60) { // 1 minute
             if (is_comparing) {
                 return is_ago ? "Just then" : "Soon";
             } else {
                 return 'A few seconds';
             }
-            
-        } else if (seconds < 60 * 60) { // 1 hour
-            distance = Math.round(seconds / 60);
-            when = `${distance} ${plural('minute', distance)}`;
-            
-        } else if (seconds < 60 * 60 * 24) { // 1 day
-            distance = Math.round(seconds / (60 * 60));
-            when = `${distance} ${plural('hour', distance)}`;
-            
-        } else if (seconds < 60 * 60 * 24 * 7) { // 1 week
-            distance = Math.round(seconds / (60 * 60 * 24));
-            when = `${distance} ${plural('day', distance)}`;
-            
-        } else if (seconds < 60 * 60 * 24 * (365 / 12)) { // 1 month
-            distance = Math.round(seconds / (60 * 60 * 24 * 7));
-            when = `${distance} ${plural('week', distance)}`;
-            
-        } else if (seconds < 60 * 60 * 24 * 30 * 12) { // # 1 year
-            distance = Math.round(seconds / (60 * 60 * 24 * (365 / 12)));
-            when = `${distance} ${plural('month', distance)}`;
+        } 
+        
+        var distance;
+        var when = [];
+        
+        if (this.props.precision == 1) {
+            if (seconds < 60 * 60) { // 1 hour
+                distance = Math.round(seconds / 60);
+                when = `${distance} ${plural('minute', distance)}`;
+            } else if (seconds < 60 * 60 * 24) { // 1 day
+                distance = Math.round(seconds / (60 * 60));
+                when = `${distance} ${plural('hour', distance)}`;
+            } else if (seconds < 60 * 60 * 24 * 7) { // 1 week
+                distance = Math.round(seconds / (60 * 60 * 24));
+                when = `${distance} ${plural('day', distance)}`;
+            } else if (seconds < 60 * 60 * 24 * (365 / 12)) { // 1 month
+                distance = Math.round(seconds / (60 * 60 * 24 * 7));
+                when = `${distance} ${plural('week', distance)}`;
+            } else if (seconds < 60 * 60 * 24 * 30 * 12) { // # 1 year
+                distance = Math.round(seconds / (60 * 60 * 24 * (365 / 12)));
+                when = `${distance} ${plural('month', distance)}`;
+            } else {
+                return this._prettyTime(date);
+            }
             
         } else {
-            return this._prettyTime(date);
+            when = [];
+            
+            // Years
+            const YEAR = 60 * 60 * 24 * 30 * 12;
+            if (seconds > YEAR) {
+                distance = Math.floor(seconds / YEAR);
+                when.push(`${distance} ${plural('year', distance)}`);
+                seconds -= distance * YEAR;
+            }
+            
+            // Months
+            const MONTH = 60 * 60 * 24 * (365 / 12);
+            if (seconds > MONTH) {
+                distance = Math.floor(seconds / MONTH);
+                when.push(`${distance} ${plural('month', distance)}`);
+                seconds -= distance * MONTH;
+            } 
+            
+            // Days
+            const DAY = 60 * 60 * 24;
+            if (seconds > DAY) {
+                distance = Math.floor(seconds / DAY);
+                when.push(`${distance} ${plural('day', distance)}`);
+                seconds -= distance * DAY;
+            }
+            
+            // Hours
+            const HOUR = 60 * 60;
+            if (seconds > HOUR) {
+                distance = Math.floor(seconds / HOUR);
+                when.push(`${distance} ${plural('hour', distance)}`);
+                seconds -= distance * HOUR;
+            }
+            
+            // Minutes
+            const MINUTE = 60;
+            if (seconds > MINUTE) {
+                distance = Math.floor(seconds / MINUTE);
+                when.push(`${distance} ${plural('minute', distance)}`);
+                seconds -= distance * MINUTE;
+            }
+            
+            if (seconds > 0) {
+                when.push(`${seconds} ${plural('second', seconds)}`);
+            }
+            
+            when = when.slice(0, this.props.precision).join(', ');
         }
         
         if (is_comparing) {
@@ -191,6 +238,7 @@ Timestamp.defaultProps = {
     time: new Date(),
     utc: true,
     format: 'ago',
+    precision: 1,
     since: null,
     until: null,
     includeDay: false,
