@@ -67,7 +67,7 @@ class Timestamp extends React.Component {
             when = [];
             
             // Years
-            const YEAR = 60 * 60 * 24 * 30 * 12;
+            const YEAR = 60 * 60 * 24 * 365;
             if (seconds > YEAR) {
                 distance = Math.floor(seconds / YEAR);
                 when.push(`${distance} ${plural('year', distance)}`);

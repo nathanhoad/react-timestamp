@@ -39,10 +39,10 @@ describe('Timestamp', () => {
         Should(ReactDOM.findDOMNode(timestamp).textContent).equal("4 months");
         
         timestamp = TestUtils.renderIntoDocument(
-            <Timestamp time={Moment().subtract(1, 'days').subtract(2, 'hours').subtract(3, 'minutes')} precision={3} />
+            <Timestamp time={Moment().subtract(1, 'year').subtract(2, 'months').subtract(3, 'days')} precision={3} />
         );
         
-        Should(ReactDOM.findDOMNode(timestamp).textContent).equal("1 day, 2 hours, 3 minutes ago");
+        Should(ReactDOM.findDOMNode(timestamp).textContent).equal("1 year, 2 months, 3 days ago");
         
         done();
     });
