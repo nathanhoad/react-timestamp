@@ -16,7 +16,8 @@ function plural(string, count, many) {
 class Timestamp extends React.Component {
   componentDidMount() {
     if (this.props.autoUpdate) {
-      this.updateInterval = setInterval(this.forceUpdate, 1000);
+      const interval = (typeof this.props.autoUpdate === 'number' ? this.props.autoUpdate : 1) * 1000;
+      this.updateInterval = setInterval(this.forceUpdate, interval);
     }
   }
 
