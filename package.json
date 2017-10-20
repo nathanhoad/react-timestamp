@@ -1,6 +1,6 @@
 {
   "name": "react-timestamp",
-  "version": "4.2.1",
+  "version": "4.3.0",
   "description": "A React component for displaying a datetime in the local timezone",
   "main": "lib/timestamp.js",
   "scripts": {
@@ -12,7 +12,11 @@
     "type": "git",
     "url": "git+https://github.com/nathanhoad/react-timestamp.git"
   },
-  "keywords": ["react", "timestamp", "datetime"],
+  "keywords": [
+    "react",
+    "timestamp",
+    "datetime"
+  ],
   "author": "Nathan Hoad",
   "license": "ISC",
   "bugs": {
