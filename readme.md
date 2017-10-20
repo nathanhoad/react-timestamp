@@ -26,6 +26,7 @@ Use UTC times for the `time` prop.
 <Timestamp time="1450663457" format='full' includeDay />
 <Timestamp time="1450663457" since="145060000" />
 <Timestamp time="1450663457" until="145070000" />
+<Timestamp time="1450663457" until="145070000" autoUpdate /> <!-- Updates every second -->
 ```
 
 Format options are:

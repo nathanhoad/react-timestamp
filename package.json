@@ -12,11 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/nathanhoad/react-timestamp.git"
   },
-  "keywords": [
-    "react",
-    "timestamp",
-    "datetime"
-  ],
+  "keywords": ["react", "timestamp", "datetime"],
   "author": "Nathan Hoad",
   "license": "ISC",
   "bugs": {
@@ -24,7 +20,8 @@
   },
   "homepage": "https://github.com/nathanhoad/react-timestamp#readme",
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-dom": "*"
   },
   "devDependencies": {
     "babel-cli": "^6.3.17",
@@ -34,8 +31,6 @@
     "jsdom": "^7.2.1",
     "mocha": "^2.3.4",
     "moment-timezone": "*",
-    "react-dom": "*",
-    "react-addons-test-utils": "*",
     "should": "^8.0.1"
   }
 }
