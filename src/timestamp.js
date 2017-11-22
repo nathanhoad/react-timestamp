@@ -17,7 +17,9 @@ class Timestamp extends React.Component {
   componentDidMount() {
     if (this.props.autoUpdate) {
       const interval = (typeof this.props.autoUpdate === 'number' ? this.props.autoUpdate : 1) * 1000;
-      this.updateInterval = setInterval(this.forceUpdate, interval);
+      this.updateInterval = setInterval(() => {
+        this.forceUpdate();
+      }, interval);
     }
   }
 
