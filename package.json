@@ -34,7 +34,7 @@
     "babel-register": "^6.3.13",
     "jsdom": "^7.2.1",
     "mocha": "^2.3.4",
-    "moment-timezone": "*",
+    "moment-timezone": "^0.5.14",
     "should": "^8.0.1"
   }
 }
