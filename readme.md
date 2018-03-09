@@ -20,6 +20,7 @@ Use UTC times for the `time` prop.
 ```html
 <Timestamp time={thing.created_at} />
 <Timestamp time={thing.created_at} twentyFourHour />
+<Timestamp time={thing.created_at} actualSeconds /> <!-- Shows actual seconds instead of 'a few seconds ago' -->
 <Timestamp time={thing.created_at} precision={2} />
 <Timestamp time="2015-10-10 10:30:00" format='full' />
 <Timestamp time="2015-10-10 10:30:00" utc={false} format='full' /> <!-- Don't convert the timestamp to local time -->

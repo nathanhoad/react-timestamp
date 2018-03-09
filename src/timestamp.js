@@ -44,12 +44,14 @@ class Timestamp extends React.Component {
 
     seconds = Math.abs(seconds);
 
-    if (seconds < 60) {
-      // 1 minute
-      if (is_comparing) {
-        return is_ago ? 'Just then' : 'Soon';
-      } else {
-        return 'A few seconds';
+    if (!this.props.actualSeconds) {
+      if (seconds < 60) {
+        // 1 minute
+        if (is_comparing) {
+          return is_ago ? 'Just then' : 'Soon';
+        } else {
+          return 'A few seconds';
+        }
       }
     }
 
@@ -57,7 +59,10 @@ class Timestamp extends React.Component {
     var when = [];
 
     if (this.props.precision == 1) {
-      if (seconds < 60 * 60) {
+      if (seconds < 60) {
+        // 1 minute
+        when = `${seconds} ${plural('second', seconds)}`;
+      } else if (seconds < 60 * 60) {
         // 1 hour
         distance = Math.round(seconds / 60);
         when = `${distance} ${plural('minute', distance)}`;
@@ -265,7 +270,8 @@ Timestamp.defaultProps = {
   className: '',
   style: {},
   autoUpdate: false,
-  twentyFourHour: false
+  twentyFourHour: false,
+  actualSeconds: false
 };
 
 module.exports = Timestamp;
