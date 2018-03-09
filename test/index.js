@@ -41,7 +41,7 @@ describe('Timestamp', () => {
       />
     );
 
-    Should(ReactDOM.findDOMNode(timestamp).textContent).equal('1 year, 2 months, 3 days ago');
+    Should(ReactDOM.findDOMNode(timestamp).textContent).match(/1 year, 2 months, \d days? ago/);
 
     done();
   });
@@ -99,6 +99,17 @@ describe('Timestamp', () => {
       let timestamp = TestUtils.renderIntoDocument(<Timestamp time={utc} format="time" />);
 
       Should(ReactDOM.findDOMNode(timestamp).textContent).equal(local.format('h:mma'));
+
+      done();
+    });
+
+    it('just the time in 24 hour time', done => {
+      let local = Moment();
+      let utc = Moment().utc();
+
+      let timestamp = TestUtils.renderIntoDocument(<Timestamp time={utc} format="time" twentyFourHour />);
+
+      Should(ReactDOM.findDOMNode(timestamp).textContent).equal(local.format('H:mm'));
 
       done();
     });
