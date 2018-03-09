@@ -143,22 +143,27 @@ class Timestamp extends React.Component {
     var hours, minutes, ampm;
 
     // eg. 5 Nov 12, 1:37pm
-    if (date.getHours() % 12 == 0) {
-      hours = 12;
+    if (this.props.twentyFourHour) {
+      hours = date.getHours();
+      ampm = '';
     } else {
-      hours = date.getHours() % 12;
+      if (date.getHours() % 12 == 0) {
+        hours = 12;
+      } else {
+        hours = date.getHours() % 12;
+      }
+
+      if (date.getHours() > 11) {
+        ampm = 'pm';
+      } else {
+        ampm = 'am';
+      }
     }
 
     if (date.getMinutes() < 10) {
       minutes = '0' + date.getMinutes();
     } else {
       minutes = '' + date.getMinutes();
-    }
-
-    if (date.getHours() > 11) {
-      ampm = 'pm';
-    } else {
-      ampm = 'am';
     }
 
     var day = this.props.includeDay ? DAYS[date.getDay()] + ', ' : '';
@@ -259,7 +264,8 @@ Timestamp.defaultProps = {
   component: 'span',
   className: '',
   style: {},
-  autoUpdate: false
+  autoUpdate: false,
+  twentyFourHour: false
 };
 
 module.exports = Timestamp;
