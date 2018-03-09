@@ -46,6 +46,16 @@ describe('Timestamp', () => {
     done();
   });
 
+  it('renders a time ago with actual seconds', done => {
+    let timestamp = TestUtils.renderIntoDocument(<Timestamp time={Moment().subtract(3, 'seconds')} />);
+    Should(ReactDOM.findDOMNode(timestamp).textContent).equal('A few seconds');
+    
+    timestamp = TestUtils.renderIntoDocument(<Timestamp time={Moment().subtract(3, 'seconds')} actualSeconds />);
+    Should(ReactDOM.findDOMNode(timestamp).textContent).equal('3 seconds ago');
+
+    done();
+  });
+
   it('renders a normal time in the future', done => {
     let timestamp = TestUtils.renderIntoDocument(<Timestamp time={Moment().add(4, 'days')} />);
     Should(ReactDOM.findDOMNode(timestamp).textContent).equal('in 4 days');
