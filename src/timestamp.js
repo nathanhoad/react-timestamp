@@ -50,7 +50,7 @@ class Timestamp extends React.Component {
         if (is_comparing) {
           return is_ago ? 'Just then' : 'Soon';
         } else {
-          return 'A few seconds';
+          return 'A few seconds ago';
         }
       }
     }
