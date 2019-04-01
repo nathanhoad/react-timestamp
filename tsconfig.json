@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "declaration": false,
+    "jsx": "react",
+    "strictNullChecks": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true
+  }
+}

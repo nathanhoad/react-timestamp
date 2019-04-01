@@ -2,11 +2,15 @@
   "name": "react-timestamp",
   "version": "4.3.1",
   "description": "A React component for displaying a datetime in the local timezone",
-  "main": "lib/timestamp.js",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "source": "src/index.tsx",
   "scripts": {
-    "test": "npm run compile && mocha test/index.js --compilers js:babel-register",
-    "compile": "node_modules/.bin/babel -d lib/ src/",
-    "prepublish": "npm run compile"
+    "test": "alsatian ./tests/**/*.spec.ts*",
+    "prepublishOnly": "npm test && npm run build",
+    "clean": "rimraf dist",
+    "build": "npm run clean && microbundle --format=es,cjs --sourcemap=false",
+    "example": "npm run build && parcel example/index.html"
   },
   "repository": {
     "type": "git",
@@ -17,24 +21,23 @@
     "timestamp",
     "datetime"
   ],
-  "author": "Nathan Hoad",
+  "author": "Nathan Hoad <nathan@nathanhoad.net>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/nathanhoad/react-timestamp/issues"
   },
   "homepage": "https://github.com/nathanhoad/react-timestamp#readme",
   "peerDependencies": {
-    "react": "*",
-    "react-dom": "*"
+    "react": "^16.8.5"
   },
   "devDependencies": {
-    "babel-cli": "^6.3.17",
-    "babel-preset-es2015": "^6.3.13",
-    "babel-preset-react": "^6.3.13",
-    "babel-register": "^6.3.13",
-    "jsdom": "^7.2.1",
-    "mocha": "^2.3.4",
-    "moment-timezone": "^0.5.14",
-    "should": "^8.0.1"
+    "@types/react-test-renderer": "^16.8.1",
+    "alsatian": "^2.4.0",
+    "microbundle": "^0.11.0",
+    "react": "^16.8.5",
+    "react-dom": "^16.8.5",
+    "react-test-renderer": "^16.8.5",
+    "rimraf": "^2.6.3",
+    "rollup": "^1.7.3"
   }
 }

@@ -1,7 +1,10 @@
-# OS junk
+# General
 .DS_Store
-
-# Node
+Thumbs.db
 node_modules
-npm-debug.log
-lib
+*.log
+
+# Build
+/dist
+.rts2_cache_*
+.cache
