@@ -3,13 +3,12 @@
   "version": "5.0.0",
   "description": "A React component for displaying a datetime in the local timezone",
   "main": "dist/index.js",
-  "module": "dist/index.mjs",
   "source": "src/index.tsx",
   "scripts": {
     "test": "alsatian ./tests/**/*.spec.ts*",
     "prepublishOnly": "npm test && npm run build",
     "clean": "rimraf dist",
-    "build": "npm run clean && microbundle --format=es,cjs --sourcemap=false",
+    "build": "npm run clean && microbundle --format=cjs --sourcemap=false",
     "example": "npm run build && parcel example/index.html"
   },
   "repository": {
@@ -31,6 +30,7 @@
     "react": "^16.8.5"
   },
   "devDependencies": {
+    "@types/react": "^16.8.18",
     "@types/react-test-renderer": "^16.8.1",
     "alsatian": "^2.4.0",
     "microbundle": "^0.11.0",
