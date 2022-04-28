@@ -47,7 +47,7 @@ export default function Timestamp({
   const seconds = secondsBetweenDates(possibleDate, relativeToDate);
   const isRelative = (relative && Math.abs(seconds) < YEAR) || relativeTo;
   const text: string = isRelative
-    ? distanceOfTimeInWords(seconds, !relativeTo)
+    ? distanceOfTimeInWords(seconds, !relativeTo, options?.translate)
     : formatDate(possibleDate, options);
 
   return createElement(

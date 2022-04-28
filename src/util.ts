@@ -2,31 +2,30 @@ export type FormatOptions = {
   format?: string;
   includeDay?: boolean;
   twentyFourHour?: boolean;
+  translate?: (key: string) => string;
 };
 
-export const MONTHS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-export const DAYS = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
+const defaultTranslate = (key: string, arg?: unknown): string => {
+  switch (key) {
+    case "second":
+    case "minute":
+    case "hour":
+    case "day":
+    case "week":
+    case "month":
+    case "year":
+      return `${arg} ${key + (arg == 1 ? "" : "s")}`;
+
+    case "d_ago":
+      return `${arg} ago`;
+
+    case "in_d":
+      return `in ${arg}`;
+
+    default:
+      return key;
+  }
+};
 
 export const MINUTE = 60;
 export const HOUR = MINUTE * 60;
@@ -34,22 +33,6 @@ export const DAY = 24 * HOUR;
 export const WEEK = DAY * 7;
 export const MONTH = (DAY * 365) / 12;
 export const YEAR = DAY * 365;
-
-/**
- * Pluralize a word based on a count
- * @param word The word to pluralize
- * @param count How many of them are there?
- * @param many A custom plural if count is != 1
- */
-export const plural = (word: string, count: number, many?: string): string => {
-  if (count == 1) {
-    return word;
-  } else if (many) {
-    return many;
-  } else {
-    return word + "s";
-  }
-};
 
 /**
  * Convert a string or number to a Date
@@ -116,6 +99,31 @@ export const formatDate = (date: Date, options: FormatOptions = {}): string => {
     minutes = "" + date.getMinutes();
   }
 
+  const t = options.translate || defaultTranslate;
+  const MONTHS = [
+    t("Jan"),
+    t("Feb"),
+    t("Mar"),
+    t("Apr"),
+    t("May"),
+    t("Jun"),
+    t("Jul"),
+    t("Aug"),
+    t("Sep"),
+    t("Oct"),
+    t("Nov"),
+    t("Dec"),
+  ];
+  const DAYS = [
+    t("Sunday"),
+    t("Monday"),
+    t("Tuesday"),
+    t("Wednesday"),
+    t("Thursday"),
+    t("Friday"),
+    t("Saturday"),
+  ];
+
   var day = options.includeDay ? DAYS[date.getDay()] + ", " : "";
 
   switch (options.format) {
@@ -154,47 +162,49 @@ export const secondsBetweenDates = (date: Date, compareTo: Date): number => {
  */
 export const distanceOfTimeInWords = (
   seconds: number,
-  relativeToNow: boolean = true
+  relativeToNow: boolean = true,
+  translate: (key: string, arg?: unknown) => string = defaultTranslate
 ): string => {
   let isAgo: boolean = seconds >= 0;
+  const t = translate || defaultTranslate;
 
   seconds = Math.abs(seconds);
 
-  if (relativeToNow && seconds < 60) return isAgo ? "just now" : "soon";
+  if (relativeToNow && seconds < 60) return isAgo ? t("just now") : t("soon");
 
   let distance: number;
   let when: string;
 
   if (seconds < MINUTE) {
     // 1 minute
-    when = `${seconds} ${plural("second", seconds)}`;
+    when = t("second", seconds);
   } else if (seconds < HOUR) {
     // 1 hour
     distance = Math.round(seconds / 60);
-    when = `${distance} ${plural("minute", distance)}`;
+    when = t("minute", distance);
   } else if (seconds < DAY) {
     // 1 day
     distance = Math.round(seconds / (60 * 60));
-    when = `${distance} ${plural("hour", distance)}`;
+    when = t("hour", distance);
   } else if (seconds < WEEK) {
     // 1 week
     distance = Math.round(seconds / (60 * 60 * 24));
-    when = `${distance} ${plural("day", distance)}`;
+    when = t("day", distance);
   } else if (seconds < MONTH) {
     // 1 month
     distance = Math.round(seconds / (60 * 60 * 24 * 7));
-    when = `${distance} ${plural("week", distance)}`;
+    when = t("week", distance);
   } else if (seconds < YEAR) {
     // # 1 year
     distance = Math.round(seconds / (60 * 60 * 24 * (365 / 12)));
-    when = `${distance} ${plural("month", distance)}`;
+    when = t("month", distance);
   } else {
     distance = Math.round(seconds / (60 * 60 * 24 * 365));
-    when = `${distance} ${plural("year", distance)}`;
+    when = t("year", distance);
   }
 
   if (!relativeToNow) return when;
-  if (isAgo) return `${when} ago`;
-  
-  return `in ${when}`;
+  if (isAgo) return t("d_ago", when);
+
+  return t("in_d", when);
 };
