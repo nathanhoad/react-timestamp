@@ -1,5 +1,12 @@
-import { createElement, useState, useEffect } from 'react';
-import { toDate, secondsBetweenDates, YEAR, distanceOfTimeInWords, formatDate, FormatOptions } from './util';
+import { createElement, useState, useEffect } from "react";
+import {
+  toDate,
+  secondsBetweenDates,
+  YEAR,
+  distanceOfTimeInWords,
+  formatDate,
+  FormatOptions,
+} from "./util";
 
 interface TimestampProps {
   className?: string;
@@ -12,36 +19,44 @@ interface TimestampProps {
   autoUpdate?: boolean;
 }
 
-export default (props: TimestampProps) => {
-  if (props.autoUpdate) {
-    const [minutes, setMinutes] = useState(0);
-    useEffect(() => {
-      const tick = () => setMinutes(minutes + 1);
-      const interval = setInterval(tick, 60000);
-      return () => clearInterval(interval);
-    }, []);
-  }
+export default function Timestamp({
+  className = "",
+  style = {},
+  component,
+  date,
+  relative,
+  relativeTo,
+  options,
+  autoUpdate,
+}: TimestampProps): JSX.Element {
+  const [minutes, setMinutes] = useState<number>(0);
+  useEffect(() => {
+    if (!autoUpdate) return;
 
-  const Component = props.component || 'time';
+    const interval = setInterval(() => setMinutes(minutes + 1), 60000);
+    return () => clearInterval(interval);
+  }, []);
 
-  let possibleDate = toDate(props.date);
-  if (!possibleDate) return createElement(Component, {}, ['Invalid date']);
+  const Component = component || "time";
 
-  const date: Date = possibleDate;
-  const relativeTo: Date = toDate(props.relativeTo) || new Date();
-  const seconds = secondsBetweenDates(date, relativeTo);
-  const output: string =
-    !props.relative || Math.abs(seconds) > YEAR
-      ? formatDate(date, props.options)
-      : distanceOfTimeInWords(seconds, !props.relativeTo);
+  let possibleDate = toDate(date);
+
+  if (!possibleDate) return createElement(Component, {}, ["Invalid date"]);
+
+  const relativeToDate: Date = toDate(relativeTo) || new Date();
+  const seconds = secondsBetweenDates(possibleDate, relativeToDate);
+  const isRelative = (relative && Math.abs(seconds) < YEAR) || relativeTo;
+  const text: string = isRelative
+    ? distanceOfTimeInWords(seconds, !relativeTo)
+    : formatDate(possibleDate, options);
 
   return createElement(
     Component,
     {
-      className: props.className || '',
-      style: props.style || {},
-      timestamp: formatDate(date, { format: 'json' })
+      className,
+      style,
+      timestamp: formatDate(possibleDate, { format: "json" }),
     },
-    output
+    text
   );
-};
+}

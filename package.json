@@ -27,16 +27,17 @@
   },
   "homepage": "https://github.com/nathanhoad/react-timestamp#readme",
   "peerDependencies": {
-    "react": "^16.8.5"
+    "react": "^16.9.0"
   },
   "devDependencies": {
-    "@types/react": "^16.8.18",
-    "@types/react-test-renderer": "^16.8.1",
-    "alsatian": "^2.4.0",
-    "microbundle": "^0.11.0",
-    "react": "^16.8.5",
-    "react-dom": "^16.8.5",
-    "react-test-renderer": "^16.8.5",
+    "@types/react": "^16.9.0",
+    "@types/react-test-renderer": "^16.9.0",
+    "alsatian": "^3.2.1",
+    "microbundle": "^0.15.0",
+    "parcel": "^2.5.0",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-test-renderer": "^16.9.0",
     "rimraf": "^2.6.3",
     "rollup": "^1.7.3"
   }

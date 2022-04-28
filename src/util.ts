@@ -4,8 +4,29 @@ export type FormatOptions = {
   twentyFourHour?: boolean;
 };
 
-export const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-export const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+export const MONTHS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+export const DAYS = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
 
 export const MINUTE = 60;
 export const HOUR = MINUTE * 60;
@@ -26,7 +47,7 @@ export const plural = (word: string, count: number, many?: string): string => {
   } else if (many) {
     return many;
   } else {
-    return word + 's';
+    return word + "s";
   }
 };
 
@@ -37,7 +58,7 @@ export const plural = (word: string, count: number, many?: string): string => {
 export const toDate = (date?: Date | string | number): Date | null => {
   if (!date) return new Date();
 
-  if (typeof date === 'number' || '' + parseInt(date as string, 10) == date) {
+  if (typeof date === "number" || "" + parseInt(date as string, 10) == date) {
     date = parseInt(date as string, 10);
     if (isNaN(date)) return null;
     date = new Date(date * 1000);
@@ -48,7 +69,7 @@ export const toDate = (date?: Date | string | number): Date | null => {
 
   const t: string[] = date.toJSON().split(/[:\-\+TZ\. ]/);
   for (var i in t) {
-    if (t[i] !== '' && isNaN(parseInt(t[i], 10))) return null;
+    if (t[i] !== "" && isNaN(parseInt(t[i], 10))) return null;
   }
 
   return date;
@@ -60,7 +81,12 @@ export const toDate = (date?: Date | string | number): Date | null => {
  * @param options Some extra options
  */
 export const formatDate = (date: Date, options: FormatOptions = {}): string => {
-  options = Object.assign({ format: 'full', includeDay: false, twentyFourHour: false }, options);
+  options = {
+    format: "full",
+    includeDay: false,
+    twentyFourHour: false,
+    ...options,
+  };
 
   let hours: string;
   let minutes: string;
@@ -69,42 +95,46 @@ export const formatDate = (date: Date, options: FormatOptions = {}): string => {
   // eg. 5 Nov 12, 1:37pm
   if (options.twentyFourHour) {
     hours = date.getHours().toString();
-    ampm = '';
+    ampm = "";
   } else {
     if (date.getHours() % 12 == 0) {
-      hours = '12';
+      hours = "12";
     } else {
       hours = (date.getHours() % 12).toString();
     }
 
     if (date.getHours() > 11) {
-      ampm = 'pm';
+      ampm = "pm";
     } else {
-      ampm = 'am';
+      ampm = "am";
     }
   }
 
   if (date.getMinutes() < 10) {
-    minutes = '0' + date.getMinutes();
+    minutes = "0" + date.getMinutes();
   } else {
-    minutes = '' + date.getMinutes();
+    minutes = "" + date.getMinutes();
   }
 
-  var day = options.includeDay ? DAYS[date.getDay()] + ', ' : '';
+  var day = options.includeDay ? DAYS[date.getDay()] + ", " : "";
 
   switch (options.format) {
-    case 'date':
-      return `${day}${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
+    case "date":
+      return `${day}${date.getDate()} ${
+        MONTHS[date.getMonth()]
+      } ${date.getFullYear()}`;
 
-    case 'time':
+    case "time":
       return `${hours}:${minutes}${ampm}`;
 
-    case 'json':
+    case "json":
       return date.toJSON();
 
-    case 'full':
+    case "full":
     default:
-      return `${day}${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}, ${hours}:${minutes}${ampm}`;
+      return `${day}${date.getDate()} ${
+        MONTHS[date.getMonth()]
+      } ${date.getFullYear()}, ${hours}:${minutes}${ampm}`;
   }
 };
 
@@ -122,85 +152,49 @@ export const secondsBetweenDates = (date: Date, compareTo: Date): number => {
  * @param seconds The distance of time in seconds
  * @param relativeToNow Are we comparing two dates or a date and now
  */
-export const distanceOfTimeInWords = (seconds: number, relativeToNow: boolean = true): string => {
+export const distanceOfTimeInWords = (
+  seconds: number,
+  relativeToNow: boolean = true
+): string => {
   let isAgo: boolean = seconds >= 0;
 
   seconds = Math.abs(seconds);
 
-  if (relativeToNow && seconds < 60) return isAgo ? 'just then' : 'soon';
+  if (relativeToNow && seconds < 60) return isAgo ? "just now" : "soon";
 
   let distance: number;
   let when: string;
 
   if (seconds < MINUTE) {
     // 1 minute
-    when = `${seconds} ${plural('second', seconds)}`;
+    when = `${seconds} ${plural("second", seconds)}`;
   } else if (seconds < HOUR) {
     // 1 hour
     distance = Math.round(seconds / 60);
-    when = `${distance} ${plural('minute', distance)}`;
+    when = `${distance} ${plural("minute", distance)}`;
   } else if (seconds < DAY) {
     // 1 day
     distance = Math.round(seconds / (60 * 60));
-    when = `${distance} ${plural('hour', distance)}`;
+    when = `${distance} ${plural("hour", distance)}`;
   } else if (seconds < WEEK) {
     // 1 week
     distance = Math.round(seconds / (60 * 60 * 24));
-    when = `${distance} ${plural('day', distance)}`;
+    when = `${distance} ${plural("day", distance)}`;
   } else if (seconds < MONTH) {
     // 1 month
     distance = Math.round(seconds / (60 * 60 * 24 * 7));
-    when = `${distance} ${plural('week', distance)}`;
+    when = `${distance} ${plural("week", distance)}`;
   } else if (seconds < YEAR) {
     // # 1 year
     distance = Math.round(seconds / (60 * 60 * 24 * (365 / 12)));
-    when = `${distance} ${plural('month', distance)}`;
+    when = `${distance} ${plural("month", distance)}`;
   } else {
     distance = Math.round(seconds / (60 * 60 * 24 * 365));
-    when = `${distance} ${plural('year', distance)}`;
+    when = `${distance} ${plural("year", distance)}`;
   }
 
-  if (!relativeToNow) {
-    return when;
-  } else if (isAgo) {
-    return `${when} ago`;
-  } else {
-    return `in ${when}`;
-  }
+  if (!relativeToNow) return when;
+  if (isAgo) return `${when} ago`;
+  
+  return `in ${when}`;
 };
-
-///
-/// Polyfill from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
-///
-if (typeof Object.assign !== 'function') {
-  // Must be writable: true, enumerable: false, configurable: true
-  Object.defineProperty(Object, 'assign', {
-    value: function assign(target, varArgs) {
-      // .length of function is 2
-      'use strict';
-      if (target == null) {
-        // TypeError if undefined or null
-        throw new TypeError('Cannot convert undefined or null to object');
-      }
-
-      var to = Object(target);
-
-      for (var index = 1; index < arguments.length; index++) {
-        var nextSource = arguments[index];
-
-        if (nextSource != null) {
-          // Skip over if undefined or null
-          for (var nextKey in nextSource) {
-            // Avoid bugs when hasOwnProperty is shadowed
-            if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
-              to[nextKey] = nextSource[nextKey];
-            }
-          }
-        }
-      }
-      return to;
-    },
-    writable: true,
-    configurable: true
-  });
-}

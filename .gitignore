@@ -8,3 +8,4 @@ node_modules
 /dist
 .rts2_cache_*
 .cache
+.parcel-cache

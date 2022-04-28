@@ -44,4 +44,13 @@ export class TestTimestamp {
     const { root } = TestRenderer.create(<Timestamp date={date} options={{ format: 'time' }} />);
     Expect(root.findByType('time').children).toEqual([expectedOutput]);
   }
+
+  @Test('Can render a date relative to another date')
+  @TestCase(new Date(2022, 3, 28, 10, 30), new Date(2022, 3, 28, 10, 31), '1 minute')
+  @TestCase(new Date(2022, 3, 28, 10, 30), new Date(2022, 3, 26, 10, 30), '2 days')
+  @TestCase(new Date(2022, 3, 28, 10, 30), new Date(2024, 3, 26, 10, 31), '2 years')
+  public testDistanceBetweenDates(date: Date, relativeTo: Date, expectedOutput: string) {
+    const { root } = TestRenderer.create(<Timestamp date={date} relativeTo={relativeTo} />);
+    Expect(root.findByType('time').children).toEqual([expectedOutput]);
+  }
 }
