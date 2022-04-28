@@ -2,5 +2,6 @@
 /tests
 tsconfig.json
 .cache
+.parcel-cache
 .rts2_cache*
 /example
